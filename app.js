@@ -1,148 +1,91 @@
-(function () {
+(() => {
   'use strict';
-
+  const $ = (selector) => document.querySelector(selector);
+  const arrow = '<span aria-hidden="true">↗</span>';
   const businesses = {
-    terminals: { number: '01 / INFRASTRUCTURE', title: 'Terminal network', shot: 'Wide terminal aerial, storage assets and logistics in context.', description: 'The infrastructure connecting supply with the needs of industry and everyday life.', action: 'Explore terminals & storage', destination: 'Terminals & storage', items: ['Network overview and approved capacity figures', 'Terminal locations and capabilities', 'Storage and distribution services', 'Business enquiry route'] },
-    commercial: { number: '02 / BUSINESS ENERGY', title: 'Supporting industry', shot: 'Commercial operations, distribution and the people behind delivery.', description: 'Fuel, gas and energy services supporting businesses and their operations.', action: 'Explore commercial energy', destination: 'Commercial energy', items: ['Commercial fuels and gas', 'Relevant business applications', 'Supply and service capabilities', 'Business enquiry route'] },
-    aviation: { number: '03 / SPECIALIST OPERATIONS', title: 'Connecting journeys', shot: 'Aviation fuelling and specialist operational expertise.', description: 'Aviation fuel and the specialist services behind the next departure.', action: 'Explore aviation', destination: 'Aviation', items: ['Aviation-fuel capability', 'Operational expertise and safety', 'Approved network information', 'Specialist enquiry route'] },
-    lubricants: { number: '04 / PRODUCTS & MARKETS', title: 'Reaching further', shot: 'Lubricant products, technical applications and international distribution.', description: 'Products, applications and partnerships that introduce Emarat to wider markets.', action: 'Explore lubricants', destination: 'Lubricants', items: ['Product families and applications', 'Approved technical information', 'Markets and distribution partners', 'International partnership enquiries'] },
-    retail: { number: '05 / EVERYDAY SERVICES', title: 'Part of everyday life', shot: 'A new station and service shoot focused on customers and daily journeys.', description: 'Stations, services and everyday essentials that keep people moving.', action: 'Explore retail & services', destination: 'Retail & services', items: ['Station and service discovery', 'Car wash and related services', 'Customer products and services', 'Location and contact information'] }
+    terminals: { title: 'Terminals & storage', headline: 'The strength behind every connection.', description: 'Connecting supply with opportunity. Our terminal and storage capabilities help bring energy from source to the businesses and communities that need it.', services: ['Storage & handling', 'Distribution & logistics', 'Infrastructure partnerships'], image: 'Terminal infrastructure', symbol: '' },
+    commercial: { title: 'Commercial energy', headline: 'Powering the work that moves us forward.', description: 'From manufacturing to logistics, every business needs energy it can depend on. Explore fuel and gas solutions shaped around the demands of your operations.', services: ['Commercial fuels', 'Gas solutions', 'Business supply'], image: 'Commercial operations', symbol: '▥' },
+    aviation: { title: 'Aviation', headline: 'Behind every journey, a dependable partner.', description: 'Supporting the connections that bring people and places together. Our aviation business combines specialist knowledge with a focus on reliable supply and safe operations.', services: ['Aviation fuels', 'Specialist operations', 'Airline partnerships'], image: 'Aviation fuelling operations', symbol: '✈' },
+    lubricants: { title: 'Lubricants', headline: 'Performance that goes the distance.', description: 'Helping engines, machinery and businesses perform at their best. Discover lubricant solutions for everyday journeys and demanding industrial applications.', services: ['Automotive lubricants', 'Industrial applications', 'Distribution partners'], image: 'Lubricant products & applications', symbol: '▥' },
+    retail: { title: 'Retail & services', headline: 'A little more, along the way.', description: 'A place to refuel, refresh and get ready for what comes next. Our stations bring together fuel, convenience and everyday services for life on the move.', services: ['Fuel & convenience', 'Car care', 'Food & refreshments'], image: 'Service stations & everyday life', symbol: '⌂' }
   };
-
-  const outline = (intro, items, note = 'Destination outline for wireframe review. Final page content and naming will be agreed in the inner-page phase.') => '<p>' + intro + '</p><ul class="outline-list">' + items.map(item => '<li>' + item + '</li>').join('') + '</ul><p class="dialog-note">' + note + '</p>';
+  const note = '<p class="dialog-note">Illustrative content for the website wireframe. Final information will be confirmed before launch.</p>';
+  const contactButton = '<button class="button" data-panel="contact">Talk to our team ' + arrow + '</button>';
   const panels = {
-    notes: { title: 'One story. Four chapters.', kicker: 'REVIEW NOTES / STRUCTURE FIRST', html: '<p>This wireframe translates the latest meeting brief into a concise, light homepage. The visual frames show placement and shot intent; they are not final photography or video.</p><h3>The opening 30-second story</h3><ol><li><strong>Energy company:</strong> lead with terminals, operations and people.</li><li><strong>Connected strength:</strong> show approved scale indicators, then the breadth of the businesses.</li><li><strong>Heritage:</strong> connect authentic archive material to present-day capability.</li><li><strong>Responsibility:</strong> introduce real environmental, resource and safety practices.</li></ol><h3>Audience access</h3><ul><li><strong>Customers:</strong> Find a station in the header; retail and services within Businesses.</li><li><strong>Suppliers:</strong> Supplier registration in the utility navigation; existing portal access through Login.</li><li><strong>UAE and international investors:</strong> Investors in the main navigation and a contextual route after business scale.</li><li><strong>Job seekers:</strong> Careers in the main navigation; detailed HR content on inner pages.</li></ul><h3>The small creative idea</h3><p>A fine connecting line sits beneath the business choices. Selection highlights that part of the line and changes one shared visual and short explanation. It is a graphic device, not a literal supply-chain map. There is no automatic rotation or scroll trapping.</p><h3>Navigation and mobile</h3><p>Health, Safety &amp; Environment sits under Sustainability, with cross-links from Businesses and supplier information. On mobile, only the logo, Find a station and menu remain in the header. The production Arabic layout should mirror the logo and navigation alignment.</p><h3>Content needed for approval</h3><ul><li>Three scale figures with units, definitions and reporting dates.</li><li>Founding date and two further significant milestones.</li><li>Authentic dated archive images and new terminal, operational and people footage.</li><li>Documented sustainability examples and approved investor content.</li></ul><h3>Optional workstreams</h3><p>Personalisation, a content-based AI assistant, an assisted location finder, analytics and GEO remain separate scope items. This wireframe does not present them as working services.</p><p class="dialog-note">The 30-second objective guides message density. Understanding the core story must not depend on watching the film or interacting with the tabs. Proposed creative copy is for review.</p>' },
-    film: { title: 'Open on energy infrastructure.', kicker: 'PROPOSED HERO FILM / SHOT DIRECTION', html: '<p>A short sequence should introduce the company before visitors begin to scroll. The headline and company message remain readable outside the film.</p><ol><li><strong>Opening:</strong> a wide view of terminal infrastructure, storage and the operating environment.</li><li><strong>Capability:</strong> controlled movement through a real distribution or commercial operation.</li><li><strong>People:</strong> an Emarat professional within that operation, connecting scale to expertise.</li></ol><h3>Production requirements</h3><ul><li>Plan one wide desktop composition and a separately composed mobile crop.</li><li>Use authentic Emarat footage with space for different responsive crops.</li><li>Provide a strong static poster so the opening works before video loads.</li><li>Keep playback muted with a visible pause control; use the poster for reduced-motion preferences.</li></ul><p class="dialog-note">No film is embedded in this wireframe. The rectangle reserves the media placement and opens this storyboard.</p>' },
-    about: { title: 'About Emarat', html: outline('The full company story continues here.', ['Company introduction and purpose', 'History and significant milestones', 'Leadership and governance', 'Operating experience and partnerships']) },
-    investors: { title: 'Investor information', html: outline('A clear company-information route for UAE and international investors.', ['Company overview and approved scale indicators', 'Businesses, operating network and markets', 'Leadership and governance', 'Approved reports and disclosures, where available', 'Partnership and corporate enquiry route'], 'This outline does not imply a securities offering, a specific investment opportunity or an existing investor-relations service.') },
-    sustainability: { title: 'Sustainability', html: outline('One home for the approach, evidence and responsible operating practices.', ['Sustainability approach and priorities', 'Resources: water and energy', 'Environment: documented initiatives and practices', 'Health, Safety & Environment', 'Approved reports and supporting information']) },
-    hse: { title: 'Health, Safety & Environment', html: outline('Recommended location: Sustainability → Health, Safety & Environment.', ['Health and safety approach', 'Environmental operating practices', 'Relevant policies and documents', 'Contractor and supplier requirements'], 'Cross-link this page from Businesses and Supplier Registration so users can reach operational requirements from their own journey.') },
-    suppliers: { title: 'Work with Emarat', html: outline('A direct route for prospective suppliers and existing supplier relationships.', ['Registration requirements and process', 'Supplier registration entry', 'Existing supplier portal', 'Relevant HSE and procurement information']) + '<a class="dialog-link" href="https://www.emarat.ae/vendors/" target="_blank" rel="noopener">Open current supplier information</a>' },
-    finder: { title: 'Find a station or service', html: outline('Customer access remains immediate, even with an infrastructure-led homepage.', ['Search by location or area', 'Filter by service, including car wash', 'Station details and opening information', 'Directions and contact details'], 'Location search is a planned destination. An AI-assisted nearest-service feature would be scoped separately.') + '<a class="dialog-link" href="https://www.emarat.ae/individuals/service-stations/find-service-station/" target="_blank" rel="noopener">Open current station finder</a>' },
-    login: { title: 'Choose your portal', html: outline('Keep existing service access in one concise utility destination.', ['Customer portal', 'Supplier portal', 'Other approved business portals'], 'Portal names and destinations will be confirmed during implementation. This wireframe does not collect credentials.') },
-    contact: { title: 'Contact Emarat', html: outline('Route enquiries by purpose so visitors reach the appropriate team.', ['Customer services', 'Business and product enquiries', 'Supplier enquiries', 'Corporate and partnership enquiries']) + '<a class="dialog-link" href="https://www.emarat.ae/contact-us/" target="_blank" rel="noopener">Open current contact page</a>' },
-    media: { title: 'Media', html: outline('Give corporate updates a clear destination without extending the main homepage story.', ['Latest news', 'Media releases', 'Approved image and video resources', 'Media enquiries']) },
-    careers: { title: 'Careers', html: outline('Make career content useful and quick to navigate.', ['Working at Emarat', 'Career opportunities', 'Application route', 'Relevant people and culture stories'], 'Detailed HR content belongs here. The homepage should not require visitors to scroll through long employment content.') },
-    language: { title: 'Arabic experience', html: '<p>The production Arabic homepage should mirror the grid, place the logo on the right and preserve the same four-chapter story.</p><ul><li>Localised copy and suitable Arabic typography.</li><li>Mirrored navigation and directional controls.</li><li>Equivalent investor, supplier and customer routes.</li><li>Media crops checked separately for the Arabic layout.</li></ul><p class="dialog-note">This review wireframe is in English. It does not switch to a translated page.</p>' },
-    privacy: { title: 'Privacy', html: outline('Reserved for approved privacy information and relevant settings.', ['Privacy notice', 'Cookie information and settings', 'Personal-data contact route'], 'Final privacy content depends on the approved analytics and optional AI scope.') },
-    search: { title: 'Search Emarat', kicker: 'WIREFRAME / SEARCH THE PROPOSED STRUCTURE', html: '<label class="search-label" for="site-search">Find a business, service or topic</label><input id="site-search" type="search" placeholder="Try terminals, investors or HSE" autocomplete="off"><ul id="search-results" class="search-results" aria-live="polite"></ul><p class="dialog-note">This prototype searches the proposed navigation and page outlines.</p>' }
+    about: { title: 'Energy that connects us.', html: '<p>At Emarat, energy is part of a bigger story. It powers the places we work, the journeys we take and the communities we share.</p><p>Our businesses bring together infrastructure, specialist expertise and everyday services with a shared purpose: to keep people and possibilities moving.</p><h3>Our purpose</h3><p>To support progress through dependable energy and thoughtful service.</p><h3>Our people</h3><p>From our terminals to our service stations, our teams bring care and commitment to every connection.</p>' + contactButton + note },
+    heritage: { title: 'A shared journey of progress.', html: '<p>Our story begins with a simple ambition: to serve a growing nation. As communities and industries developed, our capabilities grew alongside them.</p><h3>Serving the nation</h3><p>Our earliest service stations connected us with customers and communities, establishing a foundation of everyday service.</p><h3>Growing together</h3><p>New capabilities across storage, commercial energy, aviation and lubricants brought us closer to the needs of a changing economy.</p><h3>Looking ahead</h3><p>Today, that same spirit continues to guide the way we work, partner and prepare for the future.</p>' + note },
+    investors: { title: 'A connected business. Shared potential.', html: '<p>Discover the capabilities, people and partnerships behind Emarat. Our connected portfolio creates opportunities across infrastructure, business energy and consumer services.</p><h3>Explore our business</h3><ul><li>Company overview and strategic direction</li><li>Our energy businesses and operational capabilities</li><li>Governance and responsible business practices</li><li>Partnership opportunities</li></ul><p>For company information or partnership enquiries, connect with our corporate team.</p>' + contactButton + note },
+    sustainability: { title: 'Progress with responsibility.', html: '<p>The way we operate matters as much as the energy we provide. Our approach brings together resource efficiency, environmental care and the wellbeing of our people.</p><ul><li>Use resources thoughtfully across our operations.</li><li>Work with partners to understand and manage our impact.</li><li>Make safe working practices part of every day.</li></ul><p>Through practical action and shared learning, we can build a more considered way forward.</p>' + contactButton + note },
+    resources: { title: 'Making resources go further.', html: '<p>Small improvements in the way we operate can add up. From reviewing energy use to exploring water-saving practices, resource efficiency starts with understanding the work we do every day.</p><h3>A practical approach</h3><ul><li>Understand how resources are used.</li><li>Identify opportunities for more efficient operations.</li><li>Share effective practices across our teams.</li></ul>' + note },
+    environment: { title: 'Caring for the places we share.', html: '<p>Responsible operations begin with an awareness of our surroundings. We want our teams and partners to consider the environment in everyday decisions.</p><h3>Working together</h3><p>Waste management, operational awareness and community participation are areas where shared effort can make a difference.</p>' + note },
+    hse: { title: 'Everyone home safely.', html: '<p>A safe working environment is built through everyday actions. Planning carefully, speaking up and looking out for each other all play a part.</p><h3>Our shared responsibility</h3><ul><li>Prepare for the task and understand the risks.</li><li>Follow safe working procedures.</li><li>Report concerns and learn from experience.</li><li>Support the health and wellbeing of our teams.</li></ul>' + note },
+    suppliers: { title: 'Stronger partnerships start here.', html: '<p>We work with partners who share a commitment to quality, reliability and responsible business. Bring your expertise to a connected energy business.</p><h3>Working with Emarat</h3><ol><li>Tell us about your organisation and capabilities.</li><li>Share the products or services you offer.</li><li>Connect with the relevant procurement team.</li></ol><p>This preview demonstrates the supplier journey. Registration will connect to the existing supplier platform in the finished website.</p>' + contactButton + note },
+    login: { title: 'Your Emarat portals.', html: '<p>Choose the support you need. Secure account access will be connected to the existing portals in the finished website.</p><ul class="dialog-list"><li><button data-panel="suppliers"><span><strong>Supplier portal</strong><small>Registration and procurement enquiries</small></span>' + arrow + '</button></li><li><button data-panel="commercial"><span><strong>Business customers</strong><small>Commercial energy and account support</small></span>' + arrow + '</button></li><li><button data-panel="careers"><span><strong>Careers</strong><small>Explore teams and opportunities</small></span>' + arrow + '</button></li></ul>' + note },
+    careers: { title: 'Bring your energy to Emarat.', html: '<p>Good work starts with people who care. Explore a place where different skills come together to support the journeys, industries and communities around us.</p><h3>Find your next chapter</h3><ul><li>Operations & engineering</li><li>Retail & customer experience</li><li>Commercial & corporate services</li><li>Early careers & development</li></ul><p>These are sample career areas, not advertised vacancies. The finished website will connect to the recruitment platform.</p>' + contactButton + note },
+    language: { title: 'A connected experience in two languages.', html: '<p>This wireframe is presented in English. The finished Arabic experience will include translated content, right-to-left layouts and mirrored navigation.</p><p lang="ar" dir="rtl">سيتم توفير النسخة العربية من الموقع عند الإطلاق.</p>' + note },
+    privacy: { title: 'Privacy policy', html: '<p>This local prototype does not send form entries to a server or request your location. Sample interactions run only in your browser.</p><p>The finished website will include the approved privacy policy covering personal data, cookies and contact options.</p>' },
+    terms: { title: 'Terms of use', html: '<p>This is an interactive website wireframe for review. Content, figures, stories and service information are illustrative and are not official company information.</p><p>The finished website will include approved terms of use.</p>' },
+    film: { title: 'Discover Emarat.', html: '<div class="film-placeholder"><div>Emarat. Energy in Motion.<small>Brand film placeholder · 01:30</small></div></div><p>A journey through the people, infrastructure and everyday moments behind Emarat. Open on terminal operations, move through our businesses, and finish with the communities we serve.</p><p class="dialog-note">No film is loaded in this wireframe.</p>' },
+    notes: { title: 'A website built around its visitors.', html: '<p>This version uses a full corporate homepage layout with realistic sample copy, working navigation and clear routes for customers, businesses, partners and job seekers.</p><h3>Homepage structure</h3><ol><li>Brand hero and popular destinations</li><li>Company introduction and scale</li><li>Business portfolio and investor route</li><li>Heritage and company story</li><li>Sustainability and responsibility</li><li>News and company updates</li><li>Contact and full site navigation</li></ol><h3>Content status</h3><p>All copy is proposed. Statistics, news stories, dates and station listings are illustrative. Gray frames represent future photography or video. No figures, performance claims or stories should be treated as verified.</p><h3>Prototype scope</h3><p>Business tabs, search, the mobile menu, sample station filtering and contact-form validation work locally. Inner destinations open as content previews. Forms do not submit, and portals, maps, film and Arabic translation are not connected.</p>' },
+    contact: { title: 'Let’s start a conversation.', html: '<p>Tell us what you’re looking for and we’ll help you find the right team.</p><form id="contact-form"><div class="form-grid"><label class="field">Your name<input name="name" autocomplete="name" required placeholder="Full name"></label><label class="field">Email address<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label></div><label class="field">How can we help?<select name="topic"><option>General enquiry</option>Business energy</option>Partnerships & suppliers</option>Customer services</option>Careers</option></select></label><label class="field">Your message<textarea name="message" required placeholder="Tell us a little about your enquiry…"></textarea></label><button class="button" type="submit">Preview enquiry ' + arrow + '</button><p class="dialog-note">Demo form. No information is sent or saved.</p><div id="form-status" role="status" hidden></div></form>' },
+    finder: { title: 'A good stop is closer than you think.', html: '<p>Choose an area and a service to explore the sample station listings.</p><div class="form-grid"><label class="field">Area<select id="station-area"><option value="all">All areas</option><option value="Dubai">Dubai</option><option value="Sharjah">Sharjah</option><option value="Ajman">Ajman</option></select></label><label class="field">Service<select id="station-service"><option value="all">All services</option><option>Fuel</option><option>Car wash</option><option>Café</option></select></label></div><div id="station-results" aria-live="polite"></div><p class="dialog-note">Fictional listings for layout review. No live locations, distances or opening hours are provided.</p>' },
+    search: { title: 'What are you looking for?', html: '<label class="field" for="site-search">Search businesses, services and information</label><input id="site-search" type="search" placeholder="Try aviation, stations or careers" autocomplete="off"><ul id="search-results" class="dialog-list" aria-live="polite"></ul>' }
   };
-  const dialog = document.getElementById('review-dialog');
-  const dialogTitle = document.getElementById('dialog-title');
-  const dialogContent = document.getElementById('dialog-content');
-  const dialogKicker = document.getElementById('dialog-kicker');
-  const menu = document.getElementById('mobile-menu');
-  const menuToggle = document.getElementById('menu-toggle');
-  let lastTrigger;
-
-  function setMenu(open) {
-    menu.hidden = !open;
-    menuToggle.setAttribute('aria-expanded', String(open));
-    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-  }
+  const stories = {
+    'news-network': { title: 'Bringing more convenience to everyday journeys.', category: 'Company news', date: '12 November 2026', text: 'A stop along the way can be more than a place to refuel. This sample story explores how a service station brings together essentials, refreshments and care for the next part of the journey.', second: 'From a quick morning coffee to a convenient stop on the way home, thoughtful services can make everyday travel feel a little easier.' },
+    'news-partners': { title: 'Stronger partnerships. Shared possibilities.', category: 'Business', date: '28 October 2026', text: 'Progress is a shared effort. This sample story looks at how energy businesses and their partners can combine expertise, infrastructure and local knowledge to support changing needs.', second: 'By understanding each other’s ambitions, partners can identify practical ways to grow together and build lasting relationships.' },
+    'news-people': { title: 'The people behind our energy.', category: 'Our people', date: '15 October 2026', text: 'Every connection has people behind it. This sample feature introduces the everyday commitment of colleagues across operations, customer service and the wider business.', second: 'Different roles. Shared pride. Together, their work brings care, knowledge and experience to each part of the journey.' }
+  };
+  const dialog = $('#detail-dialog');
+  const menu = $('#mobile-menu');
+  const menuToggle = $('#menu-toggle');
+  let returnFocus;
+  function setMenu(open) { menu.hidden = !open; menuToggle.setAttribute('aria-expanded', String(open)); menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); }
   function openPanel(key, trigger) {
     let panel = panels[key];
-    if (key.startsWith('business-')) {
-      const b = businesses[key.slice(9)];
-      if (b) panel = { title: b.destination, html: outline('Proposed business landing-page content.', b.items) };
-    }
+    if (businesses[key]) { const b = businesses[key]; panel = { title: b.title, html: '<p>' + b.description + '</p><h3>How we can help</h3><ul>' + b.services.map(x => '<li>' + x + '</li>').join('') + '</ul>' + contactButton + note }; }
+    if (stories[key]) { const s = stories[key]; panel = { title: s.title, html: '<p class="news-meta">' + s.category + ' · ' + s.date + ' · Sample story</p><p>' + s.text + '</p><p>' + s.second + '</p><button class="text-link" data-panel="media">More stories ' + arrow + '</button>' + note }; }
+    if (key === 'media') panel = { title: 'Stories from across Emarat.', html: '<p>The latest ideas, people and developments from our connected businesses.</p><ul class="dialog-list">' + Object.entries(stories).map(([id,s]) => '<li><button data-panel="' + id + '"><span><strong>' + s.title + '</strong><small>' + s.category + ' · ' + s.date + '</small></span>' + arrow + '</button></li>').join('') + '</ul>' + note };
     if (!panel) return;
-    if (!dialog.open) lastTrigger = trigger || document.activeElement;
+    if (!dialog.open) returnFocus = trigger || document.activeElement;
     setMenu(false);
-    dialogTitle.textContent = panel.title;
-    dialogKicker.textContent = panel.kicker || 'WIREFRAME / DESTINATION OUTLINE';
-    dialogContent.innerHTML = panel.html;
+    $('#dialog-title').textContent = panel.title;
+    $('#dialog-label').textContent = key === 'notes' ? 'Website wireframe · V2' : 'Emarat · Sample content';
+    $('#dialog-content').innerHTML = panel.html;
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
     if (key === 'search') setupSearch();
-    else dialogTitle.focus({ preventScroll: true });
+    else { $('#dialog-title').focus({ preventScroll: true }); if (key === 'finder') setupFinder(); }
+    if (key === 'contact') $('#contact-form').addEventListener('submit', event => { event.preventDefault(); const status = $('#form-status'); status.hidden = false; status.className = 'status-message'; status.textContent = 'Your enquiry preview is complete. In the finished website, this would be routed to the relevant Emarat team. Nothing has been sent.'; });
   }
-
-  document.addEventListener('click', function (event) {
-    const trigger = event.target.closest('[data-panel]');
-    if (trigger) openPanel(trigger.dataset.panel, trigger);
-  });
-  document.getElementById('dialog-close').addEventListener('click', () => dialog.close());
-  dialog.addEventListener('click', function (event) {
-    if (event.target !== dialog) return;
-    const box = dialog.getBoundingClientRect();
-    if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
-  });
-  dialog.addEventListener('close', function () {
-    if (lastTrigger && lastTrigger.getClientRects().length) lastTrigger.focus();
-    else menuToggle.focus();
-  });
+  document.addEventListener('click', event => { const trigger = event.target.closest('[data-panel]'); if (trigger) openPanel(trigger.dataset.panel, trigger); });
+  $('#dialog-close').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', event => { if (event.target !== dialog) return; const r=dialog.getBoundingClientRect(); if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close(); });
+  dialog.addEventListener('close', () => { if (returnFocus?.isConnected && returnFocus.getClientRects().length) returnFocus.focus({ preventScroll:true }); else menuToggle.focus({ preventScroll:true }); });
   menuToggle.addEventListener('click', () => setMenu(menu.hidden));
-  menu.addEventListener('click', function (event) { if (event.target.closest('a')) setMenu(false); });
-  document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape' && !menu.hidden && !dialog.open) { setMenu(false); menuToggle.focus(); }
-  });
-  document.addEventListener('click', function (event) {
-    if (!menu.hidden && !menu.contains(event.target) && !menuToggle.contains(event.target)) setMenu(false);
-  });
-  window.addEventListener('resize', function () { if (window.innerWidth > 950 && !menu.hidden) setMenu(false); }, { passive: true });
-
-  const tabs = Array.from(document.querySelectorAll('[data-business]'));
-  const stage = document.getElementById('business-stage');
-  function selectBusiness(tab, focus) {
-    const key = tab.dataset.business;
-    const b = businesses[key];
-    tabs.forEach(item => { const active = item === tab; item.setAttribute('aria-selected', String(active)); item.tabIndex = active ? 0 : -1; });
-    stage.setAttribute('aria-labelledby', tab.id);
-    document.getElementById('business-visual-number').textContent = b.number;
-    document.getElementById('business-visual-label').textContent = b.title;
-    document.getElementById('business-shot').textContent = b.shot;
-    document.getElementById('business-description').textContent = b.description;
-    document.querySelector('.business-visual').dataset.active = key;
-    const detail = document.getElementById('business-detail');
-    detail.dataset.panel = 'business-' + key;
-    detail.replaceChildren(document.createTextNode(b.action + ' '));
-    const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); arrow.setAttribute('class', 'icon-arrow'); arrow.setAttribute('aria-hidden', 'true'); arrow.setAttribute('width', '16'); arrow.setAttribute('height', '16'); arrow.setAttribute('viewBox', '0 0 16 16');
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path'); path.setAttribute('d', 'M3 13 13 3M3 3h10v10'); path.setAttribute('fill', 'none'); path.setAttribute('stroke', 'currentColor'); path.setAttribute('stroke-width', '1.3'); arrow.appendChild(path); detail.appendChild(arrow);
-    if (focus) tab.focus();
+  menu.addEventListener('click', event => { if (event.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', event => { if(event.key==='Escape'&&!menu.hidden&&!dialog.open){setMenu(false);menuToggle.focus();} });
+  document.addEventListener('click', event => { if(!menu.hidden&&!menu.contains(event.target)&&!menuToggle.contains(event.target))setMenu(false); });
+  window.addEventListener('resize', () => { if(window.innerWidth>960&&!menu.hidden)setMenu(false); }, {passive:true});
+  const tabs = [...document.querySelectorAll('[data-business]')];
+  function selectBusiness(tab, focus=false) {
+    const key=tab.dataset.business, b=businesses[key];
+    tabs.forEach(t=>{t.setAttribute('aria-selected',String(t===tab));t.tabIndex=t===tab?0:-1;});
+    $('#business-stage').setAttribute('aria-labelledby',tab.id);
+    $('#business-count').textContent=String(tabs.indexOf(tab)+1).padStart(2,'0')+' / 05';
+    $('#business-title').textContent=b.headline;
+    $('#business-description').textContent=b.description;
+    $('#business-services').innerHTML=b.services.map(s=>'<li>'+s+'</li>').join('');
+    $('#business-detail').innerHTML='Explore '+b.title.toLowerCase()+' '+arrow;
+    $('#business-detail').dataset.panel=key;
+    $('.business-media').dataset.visual=key;
+    $('#business-image').hidden=key!=='terminals';
+    $('#business-image-label').textContent=b.image;
+    $('#business-symbol').textContent=b.symbol;
+    if(focus)tab.focus();
   }
-  tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => selectBusiness(tab, false));
-    tab.addEventListener('keydown', function (event) {
-      let next;
-      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % tabs.length;
-      else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index + tabs.length - 1) % tabs.length;
-      else if (event.key === 'Home') next = 0;
-      else if (event.key === 'End') next = tabs.length - 1;
-      else return;
-      event.preventDefault(); selectBusiness(tabs[next], true);
-    });
-  });
-
-  const searchItems = [
-    { title: 'Terminals & storage', description: 'Infrastructure, network and storage capability', panel: 'business-terminals' },
-    { title: 'Commercial energy', description: 'Commercial fuels, gas and business services', panel: 'business-commercial' },
-    { title: 'Aviation', description: 'Aviation fuel and specialist operations', panel: 'business-aviation' },
-    { title: 'Lubricants', description: 'Products, applications and international markets', panel: 'business-lubricants' },
-    { title: 'Find a station or car wash', description: 'Customer locations and services', panel: 'finder' },
-    { title: 'Investor information', description: 'Company, governance and partnerships', panel: 'investors' },
-    { title: 'Supplier registration', description: 'Working with Emarat and portal access', panel: 'suppliers' },
-    { title: 'Sustainability', description: 'Resources and the environment', panel: 'sustainability' },
-    { title: 'Health, Safety & Environment', description: 'HSE and operational responsibility', panel: 'hse' },
-    { title: 'About Emarat', description: 'History, heritage and company information', panel: 'about' },
-    { title: 'Careers', description: 'Jobs and working at Emarat', panel: 'careers' }
-  ];
-  function setupSearch() {
-    const input = document.getElementById('site-search');
-    const results = document.getElementById('search-results');
-    function render() {
-      const query = input.value.trim().toLowerCase();
-      const matches = searchItems.filter(item => (item.title + ' ' + item.description).toLowerCase().includes(query));
-      results.replaceChildren();
-      matches.slice(0, 6).forEach(item => {
-        const li = document.createElement('li');
-        const button = document.createElement('button'); button.type = 'button'; button.dataset.panel = item.panel;
-        const title = document.createElement('strong'); title.textContent = item.title;
-        const description = document.createElement('span'); description.textContent = item.description;
-        button.append(title, description); li.appendChild(button); results.appendChild(li);
-      });
-      if (!matches.length) { const li = document.createElement('li'); li.className = 'empty-search'; li.textContent = 'No matching topic. Try a business name, service or audience.'; results.appendChild(li); }
-    }
-    input.addEventListener('input', render); render(); input.focus();
-  }
+  tabs.forEach((tab,i)=>{tab.addEventListener('click',()=>selectBusiness(tab));tab.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight'||event.key==='ArrowDown')next=(i+1)%tabs.length;else if(event.key==='ArrowLeft'||event.key==='ArrowUp')next=(i-1+tabs.length)%tabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=tabs.length-1;else return;event.preventDefault();selectBusiness(tabs[next],true);});});
+  const searchItems=[...Object.entries(businesses).map(([key,b])=>({key,title:b.title,description:b.services.join(', ')})),{key:'finder',title:'Find a station',description:'Fuel, café and car wash services'},{key:'about',title:'About Emarat',description:'Our company and purpose'},{key:'heritage',title:'Our heritage',description:'History and company story'},{key:'sustainability',title:'Sustainability',description:'Resources and the environment'},{key:'hse',title:'Health & safety',description:'HSE, people and wellbeing'},{key:'investors',title:'Investors',description:'Company information and partnerships'},{key:'suppliers',title:'Suppliers',description:'Procurement and registration'},{key:'careers',title:'Careers',description:'People, jobs and opportunities'},{key:'contact',title:'Contact us',description:'Support and enquiries'},{key:'media',title:'Media centre',description:'News and company stories'}];
+  function setupSearch(){const input=$('#site-search'),results=$('#search-results');function render(){const q=input.value.trim().toLowerCase();const matches=searchItems.filter(x=>(x.title+' '+x.description).toLowerCase().includes(q));results.replaceChildren();for(const item of matches){const li=document.createElement('li'),button=document.createElement('button'),content=document.createElement('span'),title=document.createElement('strong'),description=document.createElement('small'),icon=document.createElement('span');button.dataset.panel=item.key;title.textContent=item.title;description.textContent=item.description;icon.textContent='↗';icon.setAttribute('aria-hidden','true');content.append(title,description);button.append(content,icon);li.append(button);results.append(li);}if(!matches.length){const li=document.createElement('li');li.textContent='No matches found. Try a business name, service or topic.';results.append(li);}}input.addEventListener('input',render);render();input.focus();}
+  function setupFinder(){const stations=[{name:'Community Station',area:'Dubai',services:['Fuel','Car wash','Café']},{name:'City Station',area:'Sharjah',services:['Fuel','Café']},{name:'Neighbourhood Station',area:'Ajman',services:['Fuel','Car wash']}];const area=$('#station-area'),service=$('#station-service'),results=$('#station-results');function render(){const matches=stations.filter(s=>(area.value==='all'||s.area===area.value)&&(service.value==='all'||s.services.includes(service.value)));results.innerHTML=matches.length?matches.map(s=>'<article class="station-result"><span>Sample location · '+s.area+'</span><h3>'+s.name+'</h3><p>'+s.services.join(' · ')+'</p></article>').join(''):'<p class="status-message">No sample stations match these filters. Try another area or service.</p>';}area.addEventListener('change',render);service.addEventListener('change',render);render();}
 })();
